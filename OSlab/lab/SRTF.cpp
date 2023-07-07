@@ -1,10 +1,12 @@
 #include<bits/stdc++.h>
 using namespace std;
 int main(){
-    freopen("input.txt","r",stdin);
-    int n,i,j,k,cnt=0,nd=0;
+    //freopen("input.txt","r",stdin);
+    int n,i,j,k,cnt=0,nd=0,p=1;
     cin>>n;
     int a[10],b[10],x[10],wt[10],tt[10];
+    vector<int>v;
+    vector<pair<int,int>>vi;
 
     for(i=0;i<n;i++) cin>>a[i];
     for(i=0;i<n;i++) cin>>b[i];
@@ -26,9 +28,11 @@ int main(){
             tt[k] = nd-a[k];
 
         }
-
+     // cout<<k+1<<" ";
+      v.push_back(k+1);
 
     }
+    //...........print..................
     cout<<"Process "<<"\t"<< "burst-time"<<"\t"<<"arrival-time" <<"\t"<<"waiting-time" <<"\t"<<"turnaround-time"<<endl;
     double avg_w=0,avg_t=0;
     for(i=0;i<n;i++){
@@ -36,20 +40,32 @@ int main(){
         avg_w+=wt[i];
         avg_t+=tt[i];
     }
-    cout<<endl;
-    vector<pair<int,int>>vi;
-    x[0]--;
-    for(i=0;i<n;i++){
-        vi.push_back(make_pair(x[i],i+1));
-    }
-    sort(vi.begin(),vi.end());
-    //for(auto it:vi) cout<<it.first<<" "<<it.second<<'\n';
+    //..............................
+   // cout<<endl;
+
+    //for(auto it:v) cout<<it<<" ";
+    //cout<<endl;
+     for(i=1;i<v.size();i++){
+            if(v[i]==v[i-1]){
+                p++;
+
+            }
+            else {
+                    vi.push_back(make_pair(v[i-1],p));
+            p=1;
+            }
+        }
+        vi.push_back(make_pair(v[i-1],(p)));
+   
+//    for(auto it:vi) cout<<it.first<<":"<<it.second<<'\n';
+//      cout<<endl;
+   // for(auto it:vi) cout<<it.first<<" : "<<it.second<<'\n';
 
 
-    cout<<"====gantt chart===\n";
-    cout<<0<<".."<<1<<"|T"<<1<<'\n';
-     k=1;
-     int t=1,len=0;
+     cout<<"====gantt chart===\n";
+
+     k=0;
+     int t=0,len=0;
      string s;
    for(auto it:vi){
         s = to_string(k);
@@ -60,8 +76,8 @@ int main(){
             len--;
         }
 
-    cout<<k<<".."<<k+it.first<<"|T"<<it.second<<'\n';
-    k+=it.first;
+    cout<<k<<".."<<k+it.second<<"|T"<<it.first<<'\n';
+    k+=it.second;
     t++;
    }
 
